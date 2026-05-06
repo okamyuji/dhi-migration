@@ -48,7 +48,9 @@ dist/
 build/
 out/
 target/
-bin/
+# `bin/` at the repo root is build artifacts; Rails apps keep their launchers
+# under `<app>/bin/` and must be tracked.
+/bin/
 *.exe
 *.dll
 *.so

@@ -1,0 +1,14 @@
+# Gitleaks configuration extending the default ruleset.
+# Reference: https://github.com/gitleaks/gitleaks
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Project-wide allowlist for non-secret artifacts"
+paths = [
+  '''(.*?)(jpg|gif|doc|docx|pdf|bin|svg|socket|woff2?|ttf|eot|ico|png)$''',
+  '''go\.sum$''',
+  '''package-lock\.json$''',
+  '''pnpm-lock\.yaml$''',
+  '''yarn\.lock$''',
+]

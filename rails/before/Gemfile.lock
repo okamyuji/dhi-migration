@@ -111,7 +111,7 @@ GEM
     minitest (6.0.6)
       drb (~> 2.0)
       prism (~> 1.5)
-    net-imap (0.6.4)
+    net-imap (0.6.4.1)
       date
       net-protocol
     net-pop (0.1.2)
@@ -220,6 +220,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  net-imap (>= 0.6.4.1)
   puma (~> 7.2)
   rails (~> 8.0)
   tzinfo-data

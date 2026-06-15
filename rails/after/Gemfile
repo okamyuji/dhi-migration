@@ -4,6 +4,7 @@ ruby "~> 3.4"
 
 gem "rails", "~> 8.0"
 gem "puma", "~> 7.2"
+gem "net-imap", ">= 0.6.4.1"
 
 # Required for distroless runtime images (DHI) that ship without system tzdata.
 # Loaded on every platform so the gem is present in any container build.

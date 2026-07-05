@@ -11,19 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  scan:
-    name: Scan for secrets
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-
-      - name: Run gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_CONFIG: .gitleaks.toml
-          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: true
-          GITLEAKS_ENABLE_SUMMARY: true
+  # gitleaks picks up .gitleaks.toml from the repo root automatically,
+  # so the explicit GITLEAKS_CONFIG env var is no longer needed.
+  security:
+    uses: okamyuji/reusable-workflows/.github/workflows/security-scan.yml@v1

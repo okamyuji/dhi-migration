@@ -1,5 +1,5 @@
 # 従来の Dockerfile (Go 1.25)
-FROM golang:1.25
+FROM golang:1.26
 WORKDIR /app
 COPY go.mod ./
 RUN go mod download

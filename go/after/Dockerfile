@@ -1,6 +1,6 @@
 # DHI 移行後 (Go 1.25)
 # syntax=docker/dockerfile:1
-FROM dhi.io/golang:1.25-alpine3.21-dev AS builder
+FROM dhi.io/golang:1.26-alpine3.24-dev AS builder
 WORKDIR /app
 COPY go.mod ./
 RUN go mod download

@@ -1,0 +1,106 @@
+name: ci
+
+# The after/ images use dhi.io, which needs a Docker Hub login, so CI builds and
+# starts every app with the language toolchain instead and checks /health.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  PORT: "8080"
+
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dir: [go/before, go/after]
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: ${{ matrix.dir }}/go.mod
+          cache: false
+      - run: go vet ./...
+      - run: go build -o server ./cmd/server
+      - run: nohup ./server > server.log 2>&1 &
+      - run: ../../.github/wait-health.sh
+
+  node:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dir: [node/before, node/after]
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - run: nohup node dist/index.js > server.log 2>&1 &
+      - run: ../../.github/wait-health.sh
+
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dir: [python/before, python/after]
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: nohup python main.py > server.log 2>&1 &
+      - run: ../../.github/wait-health.sh
+
+  rails:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dir: [rails/before, rails/after]
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
+    env:
+      RAILS_ENV: production
+      BUNDLE_WITHOUT: "development:test"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ruby/setup-ruby@7f797815d8adceb1c412e7abefdd1ab4abc47a5f # v1.335.0
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+          working-directory: ${{ matrix.dir }}
+      - run: nohup bundle exec puma -C config/puma.rb > server.log 2>&1 &
+      - run: ../../.github/wait-health.sh
+
+  security:
+    uses: okamyuji/reusable-workflows/.github/workflows/security-scan.yml@v1

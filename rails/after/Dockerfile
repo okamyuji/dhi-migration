@@ -1,6 +1,6 @@
-# DHI 移行後 (Rails 8 / Ruby 3.4)
+# DHI 移行後 (Rails 8 / Ruby 4.0)
 # syntax=docker/dockerfile:1
-FROM dhi.io/ruby:3.4-debian12-dev AS builder
+FROM dhi.io/ruby:4.0-debian13-dev AS builder
 WORKDIR /app
 
 ENV BUNDLE_PATH=/app/vendor/bundle \
@@ -12,7 +12,7 @@ RUN bundle install --jobs 4
 
 COPY . .
 
-FROM dhi.io/ruby:3.4-debian12
+FROM dhi.io/ruby:4.0-debian13
 WORKDIR /app
 
 ENV RAILS_ENV=production \
@@ -21,7 +21,7 @@ ENV RAILS_ENV=production \
     BUNDLE_PATH=/app/vendor/bundle \
     BUNDLE_DEPLOYMENT=1 \
     BUNDLE_WITHOUT="development:test" \
-    PATH="/app/vendor/bundle/ruby/3.4.0/bin:${PATH}"
+    PATH="/app/vendor/bundle/ruby/4.0.0/bin:${PATH}"
 
 COPY --from=builder --chown=nonroot:nonroot /app /app
 

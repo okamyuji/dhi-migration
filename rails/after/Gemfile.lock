@@ -108,7 +108,6 @@ GEM
       net-smtp
     marcel (1.2.1)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.9)
     minitest (6.0.6)
       drb (~> 2.0)
       prism (~> 1.5)
@@ -122,9 +121,6 @@ GEM
     net-smtp (0.5.2)
       net-protocol
     nio4r (2.7.5)
-    nokogiri (1.19.5)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.19.5-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.19.5-aarch64-linux-musl)
@@ -231,7 +227,7 @@ DEPENDENCIES
   tzinfo-data
 
 RUBY VERSION
-  ruby 3.4.5p51
+  ruby 4.0.10
 
 BUNDLED WITH
   4.0.23

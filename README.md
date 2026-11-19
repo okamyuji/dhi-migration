@@ -9,7 +9,7 @@ Docker Hardened Images (DHI) への移行を、言語別の **before / after** D
 | Go 1.25 | `golang:1.25` | `dhi.io/golang:1.25` | `cmd/server` HTTP `/health` |
 | Node.js 24 | `node:24-alpine` | `dhi.io/node:24-alpine3.21` | esbuild バンドル + `/health` |
 | Python 3.11 | `python:3.11-slim` | `dhi.io/python:3.11-debian12` | venv + `/health` |
-| Rails 8 (Ruby 3.4) | `ruby:3.4-slim` | `dhi.io/ruby:3.4-debian12` | API only Rails + Puma `/health` |
+| Rails 8 (Ruby 4.0) | `ruby:4.0-slim` | `dhi.io/ruby:4.0-debian13` | API only Rails + Puma `/health` |
 
 各言語ディレクトリは `before/` と `after/` の 2 つの Dockerfile を持ち、同じアプリで「移行前」と「DHI 移行後」のイメージを並べて比較できます。
 
@@ -22,13 +22,13 @@ Docker Hardened Images (DHI) への移行を、言語別の **before / after** D
 docker build -t dhi-rails-before rails/before
 docker run --rm -p 8080:8080 dhi-rails-before
 curl -s localhost:8080/health
-# {"status":"ok","service":"dhi-rails-sample","ruby":"3.4.9","rails":"8.1.3"}
+# {"status":"ok","service":"dhi-rails-sample","ruby":"4.0.10","rails":"8.1.4.1"}
 
 # after (DHI)
 docker build -t dhi-rails-after rails/after
 docker run --rm -p 8081:8080 dhi-rails-after
 curl -s localhost:8081/health
-# {"status":"ok","service":"dhi-rails-sample","ruby":"3.4.5","rails":"8.1.3"}
+# {"status":"ok","service":"dhi-rails-sample","ruby":"4.0.10","rails":"8.1.4.1"}
 ```
 
 他言語も `<lang>/before` / `<lang>/after` を `docker build` するだけで同様に確認できます。

@@ -1,5 +1,5 @@
-# 従来の Dockerfile (Rails 8 / Ruby 3.4)
-FROM ruby:3.4-slim
+# 従来の Dockerfile (Rails 8 / Ruby 4.0)
+FROM ruby:4.0-slim
 WORKDIR /app
 
 RUN apt-get update -qq && apt-get install -y --no-install-recommends \
